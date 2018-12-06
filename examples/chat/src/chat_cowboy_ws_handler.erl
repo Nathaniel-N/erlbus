@@ -43,6 +43,8 @@ websocket_terminate(_Reason, _Req, State) ->
 
 get_name(Req) ->
   {{Host, Port}, _} = cowboy_req:peer(Req),
-  Name = list_to_binary(string:join([inet_parse:ntoa(Host),
+  {{Year, Month, Day}, {Hour, Minute, Second}} = calendar:now_to_datetime(erlang:now()),
+  StrTime = lists:flatten(io_lib:format("~2..0w-~2..0w-~4..0w ~2..0w:~2..0w:~2..0w",[Day,Month,Year,Hour,Minute,Second])),
+  Name = list_to_binary(string:join([StrTime, " ", inet_parse:ntoa(Host),
     ":", io_lib:format("~p", [Port])], "")),
   Name.
