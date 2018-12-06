@@ -43,10 +43,6 @@ websocket_terminate(_Reason, _Req, State) ->
 
 get_name(Req) ->
   {{Host, Port}, _} = cowboy_req:peer(Req),
-  {{Year, Month, Date}, {Hour, Minute, Second}} = erlang:localtime(),
-  Time = string:join([Hour, Minute, Second], ":"),
-  Datemonthyear = string:join([Date, Month, Year], "-"),
-  Now = string:join([Datemonthyear, Time], " "),
-  Name = list_to_binary(string:join([Now, " ", inet_parse:ntoa(Host),
+  Name = list_to_binary(string:join([inet_parse:ntoa(Host),
     ":", io_lib:format("~p", [Port])], "")),
   Name.
